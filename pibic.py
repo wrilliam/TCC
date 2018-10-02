@@ -1,3 +1,6 @@
+from __future__ import print_function
+import numpy as np
+import soundfile as sf
 import librosa
 
 ZERO = 100.0
@@ -8,6 +11,7 @@ filename = 'kalimba.mp3'
 
 # 2. Load the audio as a waveform `y`, and store the sampling rate as `sr`
 y, sr = librosa.load(filename)
+# y, sr = sf.read(filename)
 
 # 3. Run the default beat tracker
 tempo, beat_frames = librosa.beat.beat_track(y=y, sr=sr)
@@ -25,3 +29,6 @@ print('Mood:',mood)
 
 # print('Saving output to beat_times.csv')
 # librosa.output.times_csv('beat_times.csv', beat_times)
+
+y_harmonic, y_percussive = librosa.effects.hpss(y, margin=(1.0,5.0))
+librosa.output.write_wav('testing.wav', y_percussive, sr)
