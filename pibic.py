@@ -9,6 +9,10 @@ ZERO = 100.0
 # filename = librosa.util.example_audio_file()
 filename = 'kalimba.mp3'
 
+# read from an URL
+# url = "https://raw.githubusercontent.com/librosa/librosa/master/tests/data/test1_44100.wav"
+# y, sr = sf.read(io.BytesIO(urlopen(url).read()))
+
 # 2. Load the audio as a waveform `y`, and store the sampling rate as `sr`
 y, sr = librosa.load(filename)
 # y, sr = sf.read(filename)
