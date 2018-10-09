@@ -3,11 +3,14 @@ import numpy as np
 import soundfile as sf
 import librosa
 
-ZERO = 100.0
+MOOD = 110.0
 
 # 1. Get the file path to the included audio example
 # filename = librosa.util.example_audio_file()
-filename = 'kalimba.mp3'
+# filename = 'C:\\TCC-master\\kalimba.mp3'
+# filename = 'C:\\TCC-master\\harp.mp3'
+# filename = 'C:\\TCC-master\\topgear.mp3'
+filename = 'C:\\TCC-master\\hadou.mp3'
 
 # read from an URL
 # url = "https://raw.githubusercontent.com/librosa/librosa/master/tests/data/test1_44100.wav"
@@ -20,8 +23,6 @@ y, sr = librosa.load(filename)
 # 3. Run the default beat tracker
 tempo, beat_frames = librosa.beat.beat_track(y=y, sr=sr)
 
-# print('Estimated tempo: {:.2f} beats per minute'.format(tempo))
-
 # 4. Convert the frame indices of beat events into timestamps
 # beat_times = librosa.frames_to_time(beat_frames, sr=sr)
 
@@ -29,19 +30,28 @@ tempo, beat_frames = librosa.beat.beat_track(y=y, sr=sr)
 # librosa.output.times_csv('beat_times.csv', beat_times)
 
 # First metric: duration
-duration = librosa.get_duration(filename)
+duration = librosa.get_duration(y)
 print('Duration (in seconds): ', duration)
 
 # Second metric: mood
-if tempo >= ZERO: mood = 'excited'
+if tempo >= MOOD: mood = 'excited'
 else: mood = 'calm'
+print('Estimated tempo: {:.2f} beats per minute'.format(tempo))
 print('Mood: ', mood)
 
-y_harmonic, y_percussive = librosa.effects.hpss(y, margin=(1.0,5.0))
-librosa.output.write_wav('testing.wav', y_percussive, sr)
+y_harmonic, y_percussive = librosa.effects.hpss(y, margin=5.0)
+librosa.output.write_wav('C:\\TCC-master\\percussive.wav', y_percussive, sr)
+librosa.output.write_wav('C:\\TCC-master\\harmonic.wav', y_harmonic, sr)
 
 # Third metric: max power (in dBFS)
-S = np.abs(librosa.stft(y))
+S = np.abs(librosa.stft(y_percussive))
 array = librosa.power_to_db(S**2)
-power = array.max()
-print('Max power (in dBFS): ', power)
+maxpower = array.max()
+minpower = array.min()
+print(array)
+print('Max power (in dB): ', maxpower)
+print('Min power (in dB): ', minpower)
+
+if maxpower >= 30.0: percussion = 'featured'
+else: percussion = 'absent'
+print('Percussion: ', percussion)
