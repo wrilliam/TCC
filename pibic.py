@@ -7,18 +7,24 @@ MOOD = 110.0
 
 # 1. Get the file path to the included audio example
 # filename = librosa.util.example_audio_file()
+
+# 1a. Get the file path to specific audio samples
 # filename = 'C:\\TCC-master\\kalimba.mp3'
 # filename = 'C:\\TCC-master\\harp.mp3'
 # filename = 'C:\\TCC-master\\topgear.mp3'
-filename = 'C:\\TCC-master\\hadou.mp3'
+# filename = 'C:\\TCC-master\\hadou.mp3'
 
-# read from an URL
+# 1b. Get all audio files in a directory sub-tree
+files = librosa.util.find_files('~/Music')
+
+# 1c. Read from an URL
 # url = "https://raw.githubusercontent.com/librosa/librosa/master/tests/data/test1_44100.wav"
 # y, sr = sf.read(io.BytesIO(urlopen(url).read()))
 
 # 2. Load the audio as a waveform `y`, and store the sampling rate as `sr`
 y, sr = librosa.load(filename)
 # y, sr = sf.read(filename)
+# y, sr = librosa.load(files)
 
 # 3. Run the default beat tracker
 tempo, beat_frames = librosa.beat.beat_track(y=y, sr=sr)
