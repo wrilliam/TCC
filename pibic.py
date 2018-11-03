@@ -3,7 +3,7 @@ import numpy as np
 import soundfile as sf
 import librosa
 
-MOOD = 110.0
+PACE = 110.0
 
 # 1. Get the file path to the included audio example
 # filename = librosa.util.example_audio_file()
@@ -26,8 +26,12 @@ y, sr = librosa.load(filename)
 # y, sr = sf.read(filename)
 # y, sr = librosa.load(files)
 
-# 3. Run the default beat tracker
+# 3a. Run the default beat tracker
 tempo, beat_frames = librosa.beat.beat_track(y=y, sr=sr)
+
+# 3b. Get the tempo
+onset_env = librosa.onset.onset_strength(y, sr=sr)
+tempo = librosa.beat.tempo(onset_envelope=onset_env, sr=sr)
 
 # 4. Convert the frame indices of beat events into timestamps
 # beat_times = librosa.frames_to_time(beat_frames, sr=sr)
@@ -39,17 +43,17 @@ tempo, beat_frames = librosa.beat.beat_track(y=y, sr=sr)
 duration = librosa.get_duration(y)
 print('Duration (in seconds): ', duration)
 
-# Second metric: mood
-if tempo >= MOOD: mood = 'excited'
-else: mood = 'calm'
+# Second metric: pace
+if tempo >= PACE: pace = 'fast'
+else: pace = 'slow'
 print('Estimated tempo: {:.2f} beats per minute'.format(tempo))
-print('Mood: ', mood)
+print('Pace: ', pace)
 
 y_harmonic, y_percussive = librosa.effects.hpss(y, margin=5.0)
 librosa.output.write_wav('C:\\TCC-master\\percussive.wav', y_percussive, sr)
 librosa.output.write_wav('C:\\TCC-master\\harmonic.wav', y_harmonic, sr)
 
-# Third metric: max power (in dBFS)
+# Third metric: presence of percussive instruments
 S = np.abs(librosa.stft(y_percussive))
 array = librosa.power_to_db(S**2)
 maxpower = array.max()
