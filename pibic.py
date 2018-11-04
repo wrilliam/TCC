@@ -44,8 +44,44 @@ duration = librosa.get_duration(y)
 print('Duration (in seconds): ', duration)
 
 # Second metric: pace
-if tempo >= PACE: pace = 'fast'
-else: pace = 'slow'
+if tempo < 40: pace = 'larghissimo'
+  else
+  if tempo < 52: pace = 'largo'
+  else
+  if tempo < 60: pace = 'largo-lento'
+  else
+  if tempo < 61: pace = 'largo-lento-adagio'
+  else
+  if tempo < 69: pace = 'lento-adagio'
+  else
+  if tempo < 76: pace = 'adagio'
+  else
+  if tempo < 81: pace = 'adagio-andante'
+  else
+  if tempo < 88: pace = 'andante'
+  else
+  if tempo < 100: pace = 'andante-moderato'
+  else
+  if tempo < 101: pace = 'andante-moderato-allegretto'
+  else
+  if tempo < 112: pace = 'moderato-allegretto'
+  else
+  if tempo < 113: pace = 'moderato-allegretto-allegro'
+  else
+  if tempo < 129: pace = 'allegretto-allegro'
+  else
+  if tempo < 138: pace = 'allegro'
+  else
+  if tempo < 140: pace = 'allegro-vivace'
+  else
+  if tempo < 143: pace = 'allegro-vivace-presto'
+  else
+  if tempo < 161: pace = 'allegro-presto'
+  else
+  if tempo < 188: pace = 'presto'
+  else
+  if tempo < 201: pace = 'presto-prestissimo'
+  else: pace = 'prestissimo'
 print('Estimated tempo: {:.2f} beats per minute'.format(tempo))
 print('Pace: ', pace)
 
